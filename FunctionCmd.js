@@ -653,7 +653,7 @@ if (cmd_el[0] == 'theme'){
         document.getElementById('data_dev_mode').innerHTML = 'ON';
         console.warn("Enabled developer mode.");
         funcOut('[Terminal_DEV]: Enabled developer mode. Type ".dev help" for list of developer commands. ');
-        sett.href = 'theme_lagoon.css';
+        document.getElementById('page_theme').href = 'theme_lagoon.css';
         document.getElementById('data_theme').innerHTML = 'lagoon';
         funcOut(`[Terminal]: Theme set to Lagoon which is the default theme for developer mode. You may switch back to your prefered theme using the "theme" command.`);
         return;
