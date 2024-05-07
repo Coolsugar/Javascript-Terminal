@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" type="text/css" href="theme_default.css" id = 'page_theme'>
+<script type="text/javascript" src = 'funcLogin.js'></script>
+<div id = 'logs' hidden="">Terminal Stored Logs:</div>
+<div id = 'text_editor_logs' hidden=""></div>
+<div id="modal_hud_one" class="modal">
+  <div class="modal-content">
+    <center>
+      <font size="24">
+        <b>
+          <u>Online Terminal Versions</u>
+        </b>
+      </font>
+  <p>
+    Online Terminal is Updated Regulalry with new Commands and settings features. All changes will be listed here once it is out of alpha stages. To suggest new additions and changes email <a href = 'mail.google.com' target="_blank">esraaj.sarkar.gupta.24@gmail.com</a>
+  </p>
+  <p><b>Terminal v.0.4(Alpha)</b><br>
+      Online Terminal is now equipped with basic and advanced mathematics commands, along with special values such as π and e. The terminal is also installed with a displayable and stored logging systems.<br><b>v.0.6(Alpha): </b><br>Several optimisation changes and new themes.<br><b>v.0.7(Alpha): </b><br> Added simulatenous commands feature and changed the basic structures of the command function. New developer commands and developer help menu added.
+  </p>
+  <button class="btn" onclick = 'mod1.style.display = "none"' id = 'modal_close'>Close</button>
+</center>
+  </div>
+</div>
+<body class = 'body'>
+    <header class="header" id = 'header'>
+     <center>
+        <font size="20">
+          <u>
+            <b>Online Terminal</b>
+          </u>
+        </font>
+      <br><i id = 'btn_one' style="cursor: pointer;">Terminal v.0.7(Alpha)</i>
+      <script type="text/javascript">
+    document.write("<br><marquee class = 'm1' id = 'm1'>The Online Multipurpose Command Prompt</marquee>")
+      </script>
+      <p id = 'name_holder'>Waiting to Login...</p>
+    </center>
+    </header><br><br><br><br><br><br><br><br><br><br><br>
+<font size = '3' id = 'box_font'>
+  <textarea id = 'text_editor' class = 'div' style="display: none; cursor: text;">New File: {file name}</textarea> <!--Text Editor-->
+    <div id = 'output' class = 'div' style="cursor: not-allowed;">
+        <center>
+            <br>
+                <br>
+                 <button onclick = 'functionLogin()' class = 'btn'>Login</button>
+                <br>
+            <br>
+        </center>
+    </div>
+</font>
+<center>
+    <textarea class = 'input' id = 'input' style = ' display:none; height: 20px; border-top: none;' placeholder = 'Enter your command...'onkeydown="countChars(this);" data-role="none" ></textarea>
+    <b id = 'characters_count' class = 'characters_count' style="display: none;float: right;">Ready</b>
+    <br><br><center>
+     <button class="btn" style="display: none;" id="send" onclick="(() => {
+    const text = document.getElementById('input').value;
+    console.log(text);
+    functionCmd(text);
+    })()">Send</button>
+
+    </center>
+</center>
+<br><br><br>
+<footer class = 'footer' id = 'footer'> 
+    <p onclick = "document.getElementById('input').value = 'help'" class = 'linked' id='linked'> > help - List of all commands.</p>
+    <p onclick = "document.getElementById('input').value = 'clear'" class = 'linked' id='linked2'> > clear - Clears the terminal box.</p>
+    <p onclick = "document.getElementById('input').value = 'close'" class = 'linked' id='linked3'> > close - Closes the tab the terminal is active on.</p>
+    <p onclick = "document.getElementById('input').value = 'refresh'" class = 'linked' id='linked4'> > refresh - Refreshes the page.</p> 
+</footer>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src = 'countChars.js' id = 'countChars'></script>
+<script type="text/javascript" src = 'ModalScript.js'></script>
+<script type="text/javascript" src="FunctionCmd.js"></script>
+<script type="text/javascript">
+var input444 = document.getElementById("input");  
+input444.addEventListener("keydown", function (e) {
+    if (e.keyCode === 13) {  
+        functionCmd(document.getElementById('input').value); 
+    }
+}); 
+document.addEventListener('keyup', function(event) {
+  if (event.keyCode == 9) {
+     functionTab(); 
+  }
+}); 
+function functionTab(){
+  document.getElementById('input').value = latest_cmd;
+  document.getElementById('input').focus()  
+}
+let t = document.getElementById("input");
+t.addEventListener("keydown", (e) => { 
+    if (e.keyCode === 13) { 
+    e.preventDefault(); 
+  }
+}); 
+</script>
+<!--Data-->
+<p id = 'data_theme'>default</p>
+<p id = 'data_name'>userName</p>
+<p id = 'data_edit'>F</p>
+<p id = 'data_dev_mode'>OFF</p>
+<p id = 'data_dev_logid'>F</p>
+<p class = 'data_dev_log' id = 'data_dev_log'>StandBy</p>
+<script src = 'dev_log.js'></script>
+</html>
+Made by Esraaj Sarkar Gupta
+AKA
+Coolsugar32

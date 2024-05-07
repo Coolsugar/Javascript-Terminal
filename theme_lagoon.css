@@ -1,0 +1,129 @@
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1; 
+  padding-top: 100px; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+}
+.modal-content {
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  background-color: skyblue;
+  color: darkblue;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 0px;
+}
+::-webkit-scrollbar-track {
+  background: darkblue;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: purple;
+  border-radius: 10px;
+}
+.body{
+  background-color: darkblue;
+}
+.inputNAME{
+width: 79.1%;
+height: 20px;
+border: solid;
+color: white;
+background-color: darkblue;
+resize: none;
+min-height:20px ;
+max-height:20px ;
+}
+.input{
+width: 79.1%;
+height: 20px;
+border: solid;
+color: white;
+float: left;
+background-color: darkblue;
+resize: none;
+min-height:20px ;
+max-height:20px ;
+}
+.input:hover{
+  color: white;
+} 
+.div{
+display: flex;
+flex-direction: column;
+min-height: 500px;
+max-height: 550px;
+border:  solid;
+color: white;
+background-color: darkblue;
+overflow: auto;
+cursor: not-allowed;
+}
+.btn{
+height: 50px;
+width: 100px;
+background-color: darkblue;
+color: white;
+border: solid;
+box-shadow: 0 9px skyblue;
+cursor: pointer;
+}
+.btn:active {
+  background-color: skyblue;
+  box-shadow: 0 5px skyblue;
+  color: blue;
+  transform: translateY(4px);
+}
+.btn:hover{
+    background-color: skyblue;
+    color: blue;
+    box-shadow: 0 9px skyblue;
+}
+.header{
+    height: 150px;
+    position: fixed;
+    width: 100%;
+    background-color: white;
+    color: darkblue;
+}
+.m1{
+    background-color: darkblue;
+    color: white;
+}
+.footer{
+    height: 150px;
+    position: absolute;
+    width: 100%;
+    background-color: white;
+    color:white;
+}
+.linked{
+    color: white; 
+    cursor: pointer;
+    background-color: darkblue;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.linked:hover{
+  color: skyblue;
+}
+.characters_count{
+  border: solid;
+  color: white;
+  height: 24px;
+  width: 10%;
+}
