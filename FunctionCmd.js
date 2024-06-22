@@ -13,8 +13,9 @@ var helpmenu = `<u><b>List of commands</b></u><br>
       <u>• date - </u>Displays current date. <br>
       <u>• time - </u>Displays current time. <br>
       <u>• output.download - </u> Download the terminal output on display.<br>
-      <u>• choose - </u> Enter as many objects as you please and the terminal will pick one at random and return it to you. Syntax: choose {from / :} {object_one object_two object_three...}
-      <br><br>
+      <u>• choose - </u> Enter as many objects as you please and the terminal will pick one at random and return it to you. Syntax: choose {from / :} {object_one object_two object_three...}<br>
+      <u>• te - </u> The inbuilt terminal Text Editor. You will find all the related commands under the specific help menu "help.type te"
+      <br>
       <b>Math Commands:</b><br>
       <u>• math {syntax}  - </u> This command is used for running basic mathematic operations. Type 'help.type math' for syntax. You can add, subtract, multiply and divide two numbers with this command.<br>
       <u>• math.adv {type} {num} - </u> Advanced mathematical calculations. Type "help.type math.adv"<br>
@@ -32,12 +33,13 @@ var helpmenu = `<u><b>List of commands</b></u><br>
       <br>• When logging in, if you type '-th' following by a whitespace and then a theme name, the terminal will automatically display your chosen theme upon logging in! Syntax: "{name} -th {theme_name}"
       <br>• Developer Mode - type ".dev enable" to get access to developer commands and logs.
       <br>• Simultaneous Commands - You can run several commands with a single input by separating commands by the "&&" argument. Example: "{command1} && {command2} {argument for command2} && {command3}"`
-console.log(saveslist)
 function functionCmd(cmd){ //command function begins
+  latest_cmd = cmd;
   var text = document.getElementById('output').innerHTML;
   var texteditor = document.getElementById('text_editor');
   var output = document.getElementById('output');
   function funcOut(out){output.innerHTML = text + '<br>' + out};
+  console.log("Function funcOut() defined")
   cmd_el = cmd.split(" ");
   try{
     if (cmd_el.includes('&&') == true){
@@ -129,28 +131,61 @@ if (cmd_el[0] == 'theme'){
       latest_cmd = cmd;
   }else if (cmd == 'hi'){
     funcOut('[Terminal]: Hello to you too, ' + document.getElementById('data_name').innerHTML + '!')
+    latest_cmd = cmd; 
+  }else if(cmd_el[0] == 'te'){ //TEXT EDITOR COMMANDS
     latest_cmd = cmd;
-  }else if(cmd_el[0] == 'te'){
-    latest_cmd = cmd;
-    function funcTout(out){texteditor.value = texteditor.value + "\n\n[Editor]: " + out}
+    //function funcTout(out){texteditor.value = texteditor.value + "\n\n[Editor]: " + out}
+    function funcTout(out){alert('[Text Editor]: ' + out)}
     if (cmd_el[1] == 'open'){
+
       if (document.getElementById('data_edit').innerHTML == 'F'){
         output.style.display = 'none';
         texteditor.style.display = 'block';
+        texteditor.focus()
         document.getElementById('data_edit').innerHTML = 'T';
         funcOut("[Terminal]: Terminal Text Editor opened.");
         console.log('Switching to Text Editor.');
+
         if (cmd_el[2] == 'new'){
           texteditor.value =  `New File: {file name}`;
         }else if(cmd_el[2] == 'load'){
-          if (cmd_el[3] == 'saves'){
+          texteditor.value = `Loading file...`
+          console.log('Loading file into TE')
+
+          if (cmd_el[3] == 'term'){
+
             try{fileName = cmd_el[4]}
             catch{funcOut("[Error]: Please enter the file name of the file you would like to load from html saves storage.")}
             texteditor.value = 'The file you entered does not exist or could not be loaded.';
             texteditor.value = document.getElementById(fileName).innerHTML;
-          }else if (cmd_el[3] == 'local'){funcTout("[Error!]: Text Editor load function is not yet supported.")}
-           else{funcOut(`[Error]: Invalid argument. Files can be loaded from either "saves" (html saves) or from "local" (your device)[NOT SUPPORTED].`)}
-        }//if not new then nothing else 
+            console.log('Loading file into TE from terminal session saveslist')
+
+          }else if (cmd_el[3] == 'local'){
+
+            functionCmd('te close')
+            latest_cmd = 'te open load local'
+            funcOut(`[Text Editor]: Loading file from local drive (your computer)...<br>[Text Editor] Displaying selection prompt...<br><br><input type="file" id="fileInput" accept=".txt">  <br> <button id="submitButton" class='characters_count' style="background-color: black;">Submit Text File</button>`)
+            const fileInput = document.getElementById("fileInput");
+            const submitButton = document.getElementById("submitButton");
+            submitButton.addEventListener("click", () => {
+              const selectedFile = fileInput.files[0];  // Get the first selected file
+              if (selectedFile) {
+                const reader = new FileReader();
+                reader.readAsText(selectedFile);
+                reader.onload = function(event) {
+                  functionCmd('te open')
+                  const textContent = event.target.result;
+                  texteditor.value = textContent
+                  console.log("Successfully loaded file from local drive into TE");  
+                };
+              } else {
+                funcOut("[Error]: Failed to load file from local drive into TEXT EDITOR - no file selected")
+                console.error("Failed to load file from local drive into TE - no file selected");
+              }
+            });
+          }else{funcOut(`[Error]: Invalid argument. Files can be loaded from either "term" (current Terminal session saves) or from "local" (your device)[NOT SUPPORTED].`)}
+        }
+        //if not new then nothing else 
       }else if (document.getElementById('data_edit').innerHTML == 'T'){funcTout("[Terminal]: Text Editor is already open!"); console.log("Text Editor was already open.")}
       else {
         funcOut("[Error!]: Unexpected data values obtained. Error should now be resolved.");
@@ -160,6 +195,8 @@ if (cmd_el[0] == 'theme'){
       }
     }else if (cmd_el[1] == 'close'){
       if (document.getElementById('data_edit').innerHTML == 'T'){
+        document.getElementById('input').focus()
+
         if (cmd_el[2] == 'save'){
           try{fName = cmd_el[3]}
           catch{
@@ -176,12 +213,28 @@ if (cmd_el[0] == 'theme'){
           console.log(fName)
           console.log(saveslist)
           console.log("Text Editor document saved to local html storage.");
+        }else if (cmd_el[2] == 'download'){
+            const textContent = texteditor.value;
+            if (!textContent) {
+              alert("Please enter some text in the text editor before downloading.");
+              return;
+            }
+            const blob = new Blob([textContent], { type: "text/plain" });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download =  cmd_el[3];
+            link.style.display = "none"; 
+            document.body.appendChild(link);
+            link.click();
+            window.URL.revokeObjectURL(url);
         }
         output.style.display = 'block';
         texteditor.style.display = 'none';
         document.getElementById('data_edit').innerHTML = 'F';
         funcOut("[Terminal]: Terminal Text Editor closed.");
         console.log('Switching to Terminal.');
+
       }else if (document.getElementById('data_edit').innerHTML = 'F'){funcOut("Text Editor is not open!")}
       else{
         funcOut("[Error!]: Unexpected data values obtained. Error should now be resolved.");
@@ -190,12 +243,14 @@ if (cmd_el[0] == 'theme'){
         document.getElementById('data_edit').innerHTML = 'F';
       }
     }else if (cmd_el[1] == 'saveslist'){
-      if (document.getElementById('data_edit').innerHTML == 'T'){funcTout(`Displaying list of saved documents: <br>` + saveslist)}
+      if (document.getElementById('data_edit').innerHTML == 'T'){funcTout(`Displaying list of saved documents: <br><b>` + saveslist + '</b>')}
       else if (document.getElementById('data_edit').innerHTML == 'F'){funcOut(`[Text Editor]: Displaying list of saved documents: <br>` + saveslist )}
       else{
       alert("[Error!]: Unexpected data values obtained. Error should now be resolved.")
       console.warn(("Unexpected data values obtained in ID: data_edit"));
       }
+    }else if(cmd_el[1] == 'save'){
+      funcOut(`Saving... `)
     }else{
       if (document.getElementById('data_edit').innerHTML == 'T'){funcTout(`[Error]: Text Editor command argument was not recognised. Do "help.type te" for syntax.`)}
       else if (document.getElementById('data_edit').innerHTML == 'F'){funcOut(`[Error]: Text Editor command argument was not recognised. Do "help.type te" for syntax.`)}
@@ -552,6 +607,20 @@ if (cmd_el[0] == 'theme'){
           •tan.rad (tangent of radian) Syntax : math.adv tan.rad {number}<br> `;  
           latest_cmd = cmd; 
         }
+        else if(cmd_el[1] == 'te'){
+          funcOut(`[Specific Help]:<b> TEXT EDITOR Commands </b><br>
+<u>> te open - </u> Open the TEXT EDITOR <br>
+<u>-> te open new - </u> Open a new, fresh file in the TEXT EDITOR<br>
+<u>-> te open load term - </u> Load a file into the TEXT EDITOR from the Terminal session saves list. Usage: "te load term {filename}"<br>
+<u>-> te open load local - </u> Load a file into the TEXT EDITOR from your machine<br>
+<br>
+<u>> te saveslist - </u> Displays a list of all the files saved to your Terminal session<br>
+<br>
+<u>> te close - </u> Close the TEXT EDITOR<br>
+<u>-> te close save - </u> Save the contents of the TEXT EDITOR to the Terminal current session saves. [These are lost once the Terminal is closed or refreshed.]. Usage: "te close save {filename}"<br>
+<u>-> te close download - </u> Save the contents of the TEXT EDITOR to your machine.<br>`)
+
+        }
         else if (cmd_el[1] == 'math.rand'){
           output.innerHTML = text + `<br><br><b>Random Number Generation</b><br>
           <u>math.rand</u>
@@ -570,7 +639,7 @@ if (cmd_el[0] == 'theme'){
           <u> > font.size</u>
           Used to set the font size of the terminal.<br>
           Commands:<br>
-          •font.size set {number} - set the font of your choice.<br>
+          +•font.size set {number} - set the font of your choice.<br>
           •font.size return - return to the default font size of 3.<br><br>
           <u> > font.face</u>
           `
